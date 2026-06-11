@@ -226,14 +226,15 @@
             transition: transform 0.1s ease-out;
         }
 
+        /* ИСПРАВЛЕНО: nth-of-type вместо nth-child */
         .eye-vein {
             position:absolute; background:rgba(120,120,120,0.5); z-index:1; border-radius:50%;
             animation:veinPulse 3s ease-in-out infinite;
         }
-        .eye-vein:nth-child(1){top:20%;left:5%;width:25%;height:2px;transform:rotate(-20deg);}
-        .eye-vein:nth-child(2){top:60%;left:8%;width:20%;height:1.5px;transform:rotate(15deg);animation-delay:0.5s;}
-        .eye-vein:nth-child(3){top:30%;right:5%;width:22%;height:1.8px;transform:rotate(25deg);animation-delay:1s;}
-        .eye-vein:nth-child(4){top:65%;right:7%;width:18%;height:1.3px;transform:rotate(-10deg);animation-delay:1.5s;}
+        .eye-vein:nth-of-type(1){top:20%;left:5%;width:25%;height:2px;transform:rotate(-20deg);}
+        .eye-vein:nth-of-type(2){top:60%;left:8%;width:20%;height:1.5px;transform:rotate(15deg);animation-delay:0.5s;}
+        .eye-vein:nth-of-type(3){top:30%;right:5%;width:22%;height:1.8px;transform:rotate(25deg);animation-delay:1s;}
+        .eye-vein:nth-of-type(4){top:65%;right:7%;width:18%;height:1.3px;transform:rotate(-10deg);animation-delay:1.5s;}
         @keyframes veinPulse { 0%,100%{opacity:0.3;background:rgba(120,120,120,0.5);} 50%{opacity:0.8;background:rgba(168,0,0,0.6);} }
 
         /* === КРОВАВЫЙ ГЛАЗ ПРИ НАВЕДЕНИИ === */
@@ -453,7 +454,6 @@
            МОБИЛЬНАЯ АДАПТАЦИЯ (полная перестройка)
            ============================================ */
         @media (max-width: 600px) {
-            /* Скрываем некоторые тяжелые анимации для производительности */
             .strobe-fast, .strobe-red {
                 animation: none !important;
                 opacity: 0.05;
@@ -495,7 +495,6 @@
             }
 
             .gothic-title {
-                /* уменьшаем глитч на мобильных */
                 animation: titleFloat 6s ease-in-out infinite;
             }
             .vallaris {
@@ -529,25 +528,12 @@
             .subtitle {
                 font-size: 0.7rem;
                 letter-spacing: 0.2em !important;
-            
-                animation:
-                    subtitleMobile 8s ease-in-out infinite,
-                    subtitleBleed 12s linear infinite !important;
+                animation: subtitleMobile 8s ease-in-out infinite,
+                           subtitleBleed 12s linear infinite !important;
             }
-            
             @keyframes subtitleMobile {
-            
-                0%,100%{
-                    opacity:0.65;
-                    transform:scale(1);
-                    letter-spacing:0.2em;
-                }
-            
-                50%{
-                    opacity:1;
-                    transform:scale(1.01);
-                    letter-spacing:0.2em;
-                }
+                0%,100% { opacity:0.65; transform:scale(1); letter-spacing:0.2em; }
+                50% { opacity:1; transform:scale(1.01); letter-spacing:0.2em; }
             }
 
             .bottom-quote {
@@ -561,7 +547,6 @@
             .floating-rune { font-size: 1.2rem; }
         }
 
-        /* Дополнительная адаптация для очень маленьких экранов */
         @media (max-width: 380px) {
             .vallaris { font-size: 2rem; }
             .god-bless { font-size: 0.9rem; }
@@ -571,17 +556,14 @@
     </style>
 </head>
 <body>
-    <!-- ЭПИЛЕПТИЧЕСКИЕ СЛОИ -->
     <div class="strobe-fast"></div>
     <div class="strobe-red"></div>
 
-    <!-- ГОТИЧЕСКИЕ КРЕСТЫ ПО КРАЯМ -->
     <div class="cross-corner cross-top-left">✞</div>
     <div class="cross-corner cross-top-right">✞</div>
     <div class="cross-corner cross-bottom-left">✞</div>
     <div class="cross-corner cross-bottom-right">✞</div>
 
-    <!-- БИБЛЕЙСКИЕ НАДПИСИ НА ФОНЕ (усиленные) -->
     <div class="biblical-text" style="top:12%; left:3%;">PSALM 23:4</div>
     <div class="biblical-text" style="top:22%; right:5%;">REVELATION 6:8</div>
     <div class="biblical-text" style="top:68%; left:7%;">MATTHEW 27:46</div>
@@ -589,24 +571,16 @@
     <div class="biblical-text" style="top:45%; left:12%;">SANCTUS SANCTUS SANCTUS</div>
     <div class="biblical-text" style="top:55%; right:8%;">IN PRINCIPIO ERAT VERBUM</div>
 
-    <!-- ЧАСТИЦЫ -->
     <canvas id="particleCanvas"></canvas>
 
-    <!-- ШУМ -->
     <div class="noise-overlay"></div>
-
-    <!-- КРОВАВЫЙ ПУЛЬС -->
     <div class="blood-pulse"></div>
-
-    <!-- ТУМАН -->
     <div class="fog-layer"></div>
     <div class="fog-layer" style="animation-delay:-15s;"></div>
 
-    <!-- СКАН-ЛИНИЯ -->
     <div class="scan-line"></div>
     <div class="scan-line" style="animation-delay:-5.5s;opacity:0.35;"></div>
 
-    <!-- РУНЫ -->
     <div class="floating-rune rune-1">𖤐</div>
     <div class="floating-rune rune-2">☠</div>
     <div class="floating-rune rune-3">⛧</div>
@@ -614,30 +588,24 @@
     <div class="floating-rune rune-5">🜚</div>
     <div class="floating-rune rune-6">⚕</div>
 
-    <!-- ПОЛЗУЩИЕ ТЕНИ -->
     <div class="crawling-shadow crawl-top"></div>
     <div class="crawling-shadow crawl-bottom"></div>
 
-    <!-- СВЕЧНЫЕ ПРИЗРАКИ -->
     <div class="candle-ghost" style="top:12%;left:16%;"></div>
     <div class="candle-ghost" style="top:72%;right:22%;"></div>
     <div class="candle-ghost" style="top:40%;left:75%;width:40px;height:40px;"></div>
 
-    <!-- АЗБУКА МОРЗЕ -->
     <span class="morse-dot"></span><span class="morse-dot"></span><span class="morse-dot"></span>
     <span class="morse-dot"></span><span class="morse-dot"></span><span class="morse-dot"></span>
 
-    <!-- ШЁПОТ -->
     <span class="whisper-text whisper-1">they are watching</span>
     <span class="whisper-text whisper-2">the serpent coils</span>
     <span class="whisper-text whisper-3">venom drips</span>
     <span class="whisper-text whisper-4">into the abyss</span>
     <span class="whisper-text whisper-2" style="top:30%;left:55%;animation-delay:6s;">silence screams</span>
 
-    <!-- СИГИЛ -->
     <div class="sigil-ring"></div>
 
-    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
     <div class="main-container">
         <div class="serpent-coil coil-1"></div>
         <div class="serpent-coil coil-2"></div>
@@ -688,6 +656,7 @@
         </div>
     </div>
 
+    <!-- Исправленный первый скрипт: закрыты IIFE и тег -->
     <script>
         (function() {
             const canvas = document.getElementById('particleCanvas');
@@ -775,21 +744,14 @@
                 link.addEventListener('mouseenter', ()=> eyeContainer.classList.add('bloody-eye'));
                 link.addEventListener('mouseleave', ()=> eyeContainer.classList.remove('bloody-eye'));
             });
+        })();
+    </script>
 
+    <!-- Исправленный Firebase-модуль с проверками -->
     <script type="module">
-        import { initializeApp }
-        from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-        
-        import {
-            getFirestore,
-            doc,
-            getDoc,
-            updateDoc,
-            increment,
-            setDoc
-        }
-        from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-        
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyDKZBIhrGjIs6il2UDpM3drhCRrZgA_VHg",
             authDomain: "vallaris-site.firebaseapp.com",
@@ -798,51 +760,40 @@
             messagingSenderId: "929954410839",
             appId: "1:929954410839:web:ba8d1dcd39ec3f35da4e12"
         };
-        
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
+
         async function updateVisitorCounter() {
-        
-            const counterRef =
-                doc(db, "stats", "visitors");
-        
-            const visited =
-                localStorage.getItem(
-                    "vallaris_visited"
-                );
-        
+            const counterRef = doc(db, "stats", "visitors");
+            const visited = localStorage.getItem("vallaris_visited");
+
             if (!visited) {
-        
                 try {
-        
-                    await updateDoc(counterRef, {
-                        count: increment(1)
-                    });
-        
+                    await updateDoc(counterRef, { count: increment(1) });
                 } catch {
-        
-                    await setDoc(counterRef, {
-                        count: 1
-                    });
+                    await setDoc(counterRef, { count: 1 });
                 }
-        
-                localStorage.setItem(
-                    "vallaris_visited",
-                    "true"
-                );
+                localStorage.setItem("vallaris_visited", "true");
             }
-        
-            const snap =
-                await getDoc(counterRef);
-        
-            document.getElementById(
-                "visitorCount"
-            ).textContent =
-                snap.data().count;
+
+            try {
+                const snap = await getDoc(counterRef);
+                if (snap.exists()) {
+                    document.getElementById("visitorCount").textContent = snap.data().count;
+                } else {
+                    // Документ не существует – создаём и показываем 1
+                    await setDoc(counterRef, { count: 1 });
+                    document.getElementById("visitorCount").textContent = '1';
+                    localStorage.setItem("vallaris_visited", "true");
+                }
+            } catch (error) {
+                document.getElementById("visitorCount").textContent = '?';
+                console.error('Firebase error:', error);
+            }
         }
-        
+
         updateVisitorCounter();
-</script>
+    </script>
 </body>
 </html>
