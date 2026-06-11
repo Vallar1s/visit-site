@@ -528,7 +528,26 @@
 
             .subtitle {
                 font-size: 0.7rem;
-                letter-spacing: 0.2em;
+                letter-spacing: 0.2em !important;
+            
+                animation:
+                    subtitleMobile 8s ease-in-out infinite,
+                    subtitleBleed 12s linear infinite !important;
+            }
+            
+            @keyframes subtitleMobile {
+            
+                0%,100%{
+                    opacity:0.65;
+                    transform:scale(1);
+                    letter-spacing:0.2em;
+                }
+            
+                50%{
+                    opacity:1;
+                    transform:scale(1.01);
+                    letter-spacing:0.2em;
+                }
             }
 
             .bottom-quote {
@@ -757,13 +776,53 @@
                 link.addEventListener('mouseleave', ()=> eyeContainer.classList.remove('bloody-eye'));
             });
 
-            function updateVisitorCounter() {
-                let count = localStorage.getItem('vallarisVisitorCount');
-                count = count ? parseInt(count) : 0;
-                count++;
-                localStorage.setItem('vallarisVisitorCount', count);
-                document.getElementById('visitorCount').textContent = count;
+                        async function updateVisitorCounter() {
+            
+                try {
+            
+                    const visited =
+                        localStorage.getItem("vallaris_visited");
+            
+                    let url;
+            
+                    if (!visited) {
+            
+                        url =
+                        "https://api.countapi.xyz/hit/vallaris-site/visitors";
+            
+                        localStorage.setItem(
+                            "vallaris_visited",
+                            "true"
+                        );
+            
+                    } else {
+            
+                        url =
+                        "https://api.countapi.xyz/get/vallaris-site/visitors";
+                    }
+            
+                    const response =
+                        await fetch(url);
+            
+                    const data =
+                        await response.json();
+            
+                    document.getElementById(
+                        "visitorCount"
+                    ).textContent =
+                        data.value;
+            
+                } catch (err) {
+            
+                    console.error(err);
+            
+                    document.getElementById(
+                        "visitorCount"
+                    ).textContent =
+                        "?";
+                }
             }
+            
             updateVisitorCounter();
         })();
     </script>
