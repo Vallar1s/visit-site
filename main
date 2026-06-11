@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>🜂 god bless Vallaris — Abyssal Sanctum</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Nosifer&family=Special+Elite&family=Cormorant+SC:wght@300;400;600;700&family=Eater&family=Butcherman&family=Creepster&family=MedievalSharp&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --void: #000000; --bone: #d4d4d4; --ash: #6b6b6b; --fang: #e8e8e8;
+            --blood: #a80000; --blood-glow: #8b0000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--void);
+            color: var(--bone);
+            font-family: 'Special Elite', 'Cormorant SC', serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            cursor: crosshair;
+            position: relative;
+            animation: breathBackground 8s ease-in-out infinite;
+        }
+
+        @keyframes breathBackground {
+            0%,100%{ background:#000; } 20%{ background:#020202; } 40%{ background:#010101; } 70%{ background:#030303; } 85%{ background:#010101; }
+        }
+
+        /* === ЭПИЛЕПТИЧЕСКИЙ ФОН (ослаблен) === */
+        .strobe-fast {
+            position: fixed; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;
+            background: #000;
+            animation: strobeFlash 0.04s steps(2, start) infinite;
+            opacity: 0.25;
+        }
+        @keyframes strobeFlash {
+            0% { background: #000; opacity: 0.15; }
+            50% { background: #330000; opacity: 0.4; }
+            100% { background: #000; opacity: 0.15; }
+        }
+        .strobe-red {
+            position: fixed; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;
+            background: transparent;
+            animation: redStrobe 0.06s steps(1, start) infinite;
+            opacity: 0.35;
+        }
+        @keyframes redStrobe {
+            0% { background: rgba(168,0,0,0.25); }
+            50% { background: transparent; }
+        }
+
+        /* === ЧАСТИЦЫ === */
+        #particleCanvas {
+            position: fixed; top:0; left:0; width:100%; height:100%; z-index:3; pointer-events:none; opacity:0.85;
+        }
+
+        /* === ШУМ === */
+        .noise-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%; z-index:4; pointer-events:none; opacity:0.06;
+            background: repeating-conic-gradient(#fff 0 0.0001%, #000 0 0.0002%) 0 0 / 200px 200px;
+            animation: noiseShift 0.15s steps(3, end) infinite;
+        }
+        @keyframes noiseShift { 0%{transform:translate(0,0);} 25%{transform:translate(-1px,2px);} 50%{transform:translate(3px,-1px);} 75%{transform:translate(-2px,-3px);} 100%{transform:translate(1px,1px);} }
+
+        /* === ТУМАН === */
+        .fog-layer {
+            position: fixed; top:0; left:-100%; width:300%; height:100%; z-index:5; pointer-events:none;
+            background: radial-gradient(ellipse at 30% 50%, rgba(20,20,20,0.7) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(15,15,15,0.6) 0%, transparent 55%),
+                        radial-gradient(ellipse at 50% 80%, rgba(25,25,25,0.5) 0%, transparent 50%);
+            animation: fogDrift 35s linear infinite; opacity:0.7;
+        }
+        .fog-layer:nth-child(3) { animation-duration:45s; animation-direction:reverse; opacity:0.5; top:-20%; }
+        @keyframes fogDrift { 0%{transform:translateX(0) translateY(0);} 25%{transform:translateX(8%) translateY(-3%);} 50%{transform:translateX(16%) translateY(2%);} 75%{transform:translateX(8%) translateY(-1%);} 100%{transform:translateX(0) translateY(0);} }
+
+        /* === КРОВАВЫЙ ПУЛЬС === */
+        .blood-pulse {
+            position: fixed; top:0; left:0; width:100%; height:100%; z-index:2; pointer-events:none;
+            background: radial-gradient(circle at 50% 50%, rgba(168,0,0,0.25) 0%, transparent 70%);
+            animation: bloodPulse 10s ease-in-out infinite; opacity:0;
+        }
+        @keyframes bloodPulse { 0%,100%{opacity:0;transform:scale(1);} 8%{opacity:0.45;transform:scale(1.06);} 16%{opacity:0;} 50%{opacity:0;} 58%{opacity:0.35;transform:scale(1.03);} 66%{opacity:0;} }
+
+        /* === СКАН-ЛИНИЯ === */
+        .scan-line {
+            position: fixed; top:-5%; left:0; width:100%; height:3px; z-index:6; pointer-events:none;
+            background:rgba(255,255,255,0.03); box-shadow:0 0 80px 30px rgba(255,255,255,0.015);
+            animation:scanDown 11s linear infinite; opacity:0.6;
+        }
+        @keyframes scanDown { 0%{top:-5%;} 100%{top:105%;} }
+
+        /* === ГОТИЧЕСКИЕ КРЕСТЫ ПО КРАЯМ === */
+        .cross-corner {
+            position: fixed;
+            z-index: 20;
+            pointer-events: none;
+            font-size: 3rem;
+            color: rgba(255,255,255,0.12);
+            animation: crossPulse 4s ease-in-out infinite;
+            font-family: 'UnifrakturMaguntia', serif;
+            text-shadow: 0 0 15px rgba(168,0,0,0.5);
+        }
+        .cross-top-left { top: 10px; left: 10px; animation-delay: 0s; }
+        .cross-top-right { top: 10px; right: 10px; animation-delay: 1s; }
+        .cross-bottom-left { bottom: 10px; left: 10px; animation-delay: 2s; }
+        .cross-bottom-right { bottom: 10px; right: 10px; animation-delay: 3s; }
+        @keyframes crossPulse {
+            0%,100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(1.05); }
+        }
+
+        /* === БИБЛЕЙСКИЕ НАДПИСИ НА ФОНЕ (усиленные) === */
+        .biblical-text {
+            position: fixed;
+            z-index: 7;
+            pointer-events: none;
+            font-family: 'MedievalSharp', 'Special Elite', cursive;
+            color: rgba(240,240,240,0.35);
+            white-space: nowrap;
+            animation: biblicalFloat 30s linear infinite;
+            user-select: none;
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
+            font-size: 0.9rem;
+        }
+        .biblical-text:nth-child(1) { top: 12%; left: 3%; animation-delay: 0s; }
+        .biblical-text:nth-child(2) { top: 22%; right: 5%; animation-delay: 5s; font-size: 0.8rem; }
+        .biblical-text:nth-child(3) { top: 68%; left: 7%; animation-delay: 10s; font-size: 0.75rem; }
+        .biblical-text:nth-child(4) { top: 78%; right: 3%; animation-delay: 15s; font-size: 0.85rem; }
+        .biblical-text:nth-child(5) { top: 45%; left: 12%; animation-delay: 20s; font-size: 0.8rem; }
+        .biblical-text:nth-child(6) { top: 55%; right: 8%; animation-delay: 25s; font-size: 0.7rem; }
+        @keyframes biblicalFloat {
+            0% { transform: translateY(0); opacity: 0.25; }
+            25% { transform: translateY(-30px); opacity: 0.5; }
+            50% { transform: translateY(0); opacity: 0.35; }
+            75% { transform: translateY(30px); opacity: 0.45; }
+            100% { transform: translateY(0); opacity: 0.25; }
+        }
+
+        /* === ОСНОВНОЙ КОНТЕЙНЕР === */
+        .main-container {
+            position:relative; z-index:10; width:90%; max-width:750px; padding:50px 40px;
+            display:flex; flex-direction:column; align-items:center; gap:30px;
+        }
+
+        /* === ГОТИЧЕСКАЯ РАМКА === */
+        .gothic-frame {
+            position:relative; width:100%; padding:50px 30px 40px;
+            border:3px solid var(--ash); border-top:none;
+            clip-path: polygon(0% 15%, 6% 0%, 94% 0%, 100% 15%, 100% 100%, 0% 100%);
+            background:rgba(0,0,0,0.85);
+            box-shadow: 0 0 60px rgba(150,150,150,0.08), 0 0 120px rgba(0,0,0,0.9), inset 0 0 80px rgba(0,0,0,0.7), 0 0 8px rgba(200,200,200,0.1);
+            animation: framePulse 6s ease-in-out infinite, frameShimmer 12s linear infinite, frameBloodBleed 18s ease-in-out infinite;
+            display:flex; flex-direction:column; align-items:center; gap:25px;
+        }
+        @keyframes framePulse { 0%,100%{box-shadow:0 0 60px rgba(150,150,150,0.08),0 0 120px rgba(0,0,0,0.9),inset 0 0 80px rgba(0,0,0,0.7),0 0 8px rgba(200,200,200,0.1);} 30%{box-shadow:0 0 90px rgba(180,180,180,0.14),0 0 150px rgba(0,0,0,0.95),inset 0 0 100px rgba(0,0,0,0.8),0 0 18px rgba(220,220,220,0.18);} 60%{box-shadow:0 0 40px rgba(120,120,120,0.05),0 0 90px rgba(0,0,0,0.85),inset 0 0 60px rgba(0,0,0,0.6),0 0 4px rgba(170,170,170,0.06);} }
+        @keyframes frameShimmer { 0%,100%{border-color:#6b6b6b;} 20%{border-color:#8a8a8a;} 40%{border-color:#5a5a5a;} 55%{border-color:#9e9e9e;} 70%{border-color:#4a4a4a;} 85%{border-color:#7a7a7a;} }
+        @keyframes frameBloodBleed { 0%,90%,100%{border-color:var(--ash);} 93%{border-color:var(--blood);} 96%{border-color:var(--ash);} }
+
+        .gothic-frame::before {
+            content:''; position:absolute; top:-18px; left:50%; transform:translateX(-50%);
+            width:0; height:0; border-left:28px solid transparent; border-right:28px solid transparent; border-bottom:35px solid var(--ash);
+            filter:drop-shadow(0 0 12px rgba(200,200,200,0.4));
+            animation:spireGlow 3.5s ease-in-out infinite, spireTremble 0.8s ease-in-out infinite;
+        }
+        @keyframes spireGlow { 0%,100%{filter:drop-shadow(0 0 12px rgba(200,200,200,0.4));} 50%{filter:drop-shadow(0 0 28px rgba(240,240,240,0.7));} }
+        @keyframes spireTremble { 0%,100%{transform:translateX(-50%) rotate(0deg);} 25%{transform:translateX(-50%) rotate(0.5deg);} 75%{transform:translateX(-50%) rotate(-0.5deg);} }
+        .gothic-frame::after {
+            content:''; position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+            width:8px; height:30px; background:var(--fang); border-radius:2px;
+            box-shadow:0 0 20px rgba(255,255,255,0.5);
+            animation:spireRodGlow 2s ease-in-out infinite, spireRodBleed 7s linear infinite;
+        }
+        @keyframes spireRodGlow { 0%,100%{box-shadow:0 0 20px rgba(255,255,255,0.5);} 40%{box-shadow:0 0 45px rgba(255,255,255,0.9),0 0 80px rgba(200,200,200,0.4);} }
+        @keyframes spireRodBleed { 0%,80%,100%{background:var(--fang);} 85%{background:var(--blood);} 90%{background:var(--fang);} }
+
+        /* === ЗМЕИНЫЙ ГЛАЗ === */
+        .serpent-eye-container {
+            position:relative; width:120px; height:70px; margin:10px 0; z-index:11;
+            animation:eyeFloat 5s ease-in-out infinite;
+        }
+        @keyframes eyeFloat { 0%,100%{transform:translateY(0);} 30%{transform:translateY(-8px);} 60%{transform:translateY(-3px);} 85%{transform:translateY(-10px);} }
+        .serpent-eye {
+            width:100%; height:100%; background:#0a0a0a; border-radius:50%; position:relative; overflow:hidden;
+            border:3px solid #5a5a5a;
+            box-shadow:0 0 40px rgba(150,150,150,0.3),0 0 80px rgba(0,0,0,0.8),inset 0 0 60px rgba(0,0,0,0.9);
+            animation:eyeBorderGlow 4s ease-in-out infinite, eyeBloodTinge 9s ease-in-out infinite;
+        }
+        @keyframes eyeBorderGlow { 0%,100%{border-color:#5a5a5a;box-shadow:0 0 40px rgba(150,150,150,0.3),0 0 80px rgba(0,0,0,0.8);} 35%{border-color:#9a9a9a;box-shadow:0 0 70px rgba(200,200,200,0.55),0 0 120px rgba(0,0,0,0.9);} 70%{border-color:#3a3a3a;box-shadow:0 0 20px rgba(100,100,100,0.15),0 0 50px rgba(0,0,0,0.7);} }
+        @keyframes eyeBloodTinge { 0%,93%,100%{box-shadow:0 0 40px rgba(150,150,150,0.3),0 0 80px rgba(0,0,0,0.8),inset 0 0 60px rgba(0,0,0,0.9);} 94%{box-shadow:0 0 40px rgba(168,0,0,0.5),0 0 80px rgba(0,0,0,0.8),inset 0 0 60px rgba(0,0,0,0.9);} 96%{box-shadow:0 0 40px rgba(150,150,150,0.3),0 0 80px rgba(0,0,0,0.8),inset 0 0 60px rgba(0,0,0,0.9);} }
+
+        .serpent-iris {
+            position:absolute; width:55%; height:80%; background:radial-gradient(ellipse, #e0e0e0 0%, #888 30%, #333 60%, #111 100%);
+            border-radius:50%; top:10%; left:22%;
+            box-shadow:0 0 30px rgba(200,200,200,0.3);
+            animation:irisContract 7s ease-in-out infinite;
+        }
+        .serpent-iris::after {
+            content:''; position:absolute; width:40%; height:40%; background:radial-gradient(circle, rgba(168,0,0,0.5) 0%, transparent 70%);
+            top:15%; left:25%; border-radius:50%; opacity:0; animation:irisRedShimmer 4s ease-in-out infinite;
+        }
+        @keyframes irisContract { 0%,100%{transform:scale(1);} 20%{transform:scale(0.85);} 40%{transform:scale(1.08);} 60%{transform:scale(0.9);} 80%{transform:scale(1.05);} }
+        @keyframes irisRedShimmer { 0%,100%{opacity:0;} 30%{opacity:0.6;} 50%{opacity:0;} 80%{opacity:0.4;} }
+
+        .pupil-slit-wrapper {
+            position:absolute; width:12%; height:70%; top:50%; left:50%;
+            transform:translate(-50%, -50%);
+            animation:pupilSlitAnim 5s ease-in-out infinite;
+            z-index:2;
+        }
+        @keyframes pupilSlitAnim {
+            0%,100%{transform:translate(-50%, -50%) scaleY(1);}
+            25%{transform:translate(-50%, -50%) scaleY(0.6);}
+            50%{transform:translate(-50%, -50%) scaleY(1.2);}
+            75%{transform:translate(-50%, -50%) scaleY(0.4);}
+        }
+        .serpent-pupil-tracker {
+            width:100%; height:100%; background:#000; border-radius:45%;
+            box-shadow:0 0 15px rgba(0,0,0,0.9), 0 0 3px rgba(255,255,255,0.2);
+            transform:translate(0, 0);
+            transition: transform 0.1s ease-out;
+        }
+
+        .eye-vein {
+            position:absolute; background:rgba(120,120,120,0.5); z-index:1; border-radius:50%;
+            animation:veinPulse 3s ease-in-out infinite;
+        }
+        .eye-vein:nth-child(1){top:20%;left:5%;width:25%;height:2px;transform:rotate(-20deg);}
+        .eye-vein:nth-child(2){top:60%;left:8%;width:20%;height:1.5px;transform:rotate(15deg);animation-delay:0.5s;}
+        .eye-vein:nth-child(3){top:30%;right:5%;width:22%;height:1.8px;transform:rotate(25deg);animation-delay:1s;}
+        .eye-vein:nth-child(4){top:65%;right:7%;width:18%;height:1.3px;transform:rotate(-10deg);animation-delay:1.5s;}
+        @keyframes veinPulse { 0%,100%{opacity:0.3;background:rgba(120,120,120,0.5);} 50%{opacity:0.8;background:rgba(168,0,0,0.6);} }
+
+        /* === КРОВАВЫЙ ГЛАЗ ПРИ НАВЕДЕНИИ === */
+        .serpent-eye-container.bloody-eye .serpent-iris {
+            background: radial-gradient(ellipse, #ff0000 0%, #8b0000 40%, #330000 100%) !important;
+            box-shadow: 0 0 40px red, 0 0 80px darkred !important;
+            animation: irisContract 7s ease-in-out infinite, irisRedGlow 0.8s ease-in-out infinite !important;
+        }
+        @keyframes irisRedGlow { 0%,100%{box-shadow:0 0 40px red,0 0 80px darkred;} 50%{box-shadow:0 0 60px red,0 0 120px #ff0000;} }
+        .serpent-eye-container.bloody-eye .serpent-eye {
+            border-color: #8b0000 !important;
+            box-shadow: 0 0 60px red, 0 0 120px darkred, inset 0 0 60px rgba(0,0,0,0.9) !important;
+        }
+        .serpent-eye-container.bloody-eye .eye-vein {
+            background: rgba(200,0,0,0.9) !important;
+            animation: veinPulseBloody 0.3s infinite !important;
+        }
+        @keyframes veinPulseBloody { 0%,100%{opacity:0.9;background:rgba(200,0,0,0.9);} 50%{opacity:1;background:rgba(255,0,0,1);} }
+        .serpent-eye-container.bloody-eye .serpent-pupil-tracker {
+            background: #330000 !important;
+            box-shadow: 0 0 25px red, 0 0 5px #fff !important;
+        }
+        .serpent-eye-container.bloody-eye::before,
+        .serpent-eye-container.bloody-eye::after {
+            content:''; position:absolute; bottom: -8px;
+            width:4px; height:0; background:red; border-radius:50% 50% 0 0;
+            box-shadow:0 0 10px red, 0 0 20px darkred;
+            z-index:20; pointer-events:none;
+            animation: tearDrop 0.9s infinite;
+        }
+        .serpent-eye-container.bloody-eye::before { left:35%; animation-delay:0.3s; background:#cc0000; width:3px; }
+        .serpent-eye-container.bloody-eye::after { left:60%; animation-delay:0s; background:red; }
+        @keyframes tearDrop {
+            0%{ height:0; opacity:0; bottom:-8px; }
+            15%{ height:18px; opacity:1; bottom:-20px; }
+            60%{ height:30px; opacity:0.8; bottom:-35px; }
+            100%{ height:0; opacity:0; bottom:-8px; }
+        }
+
+        /* === ЗАГОЛОВОК С КРЕСТАМИ === */
+        .gothic-title {
+            font-family: 'UnifrakturMaguntia', 'Nosifer', 'MedievalSharp', cursive;
+            text-align:center;
+            color:var(--fang);
+            animation: titleFlicker 0.3s infinite, titleGlitch 4s steps(1) infinite, titleFloat 6s ease-in-out infinite;
+            text-shadow:0 0 20px rgba(255,255,255,0.5),0 0 60px rgba(200,200,200,0.3),0 0 100px rgba(0,0,0,0.9),2px 2px 0 #000,-2px -2px 0 rgba(255,255,255,0.15);
+            cursor:default; user-select:none; line-height:1.2;
+        }
+        .god-bless {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            letter-spacing: 0.3em;
+            opacity: 0.9;
+            font-family: 'Cormorant SC', serif;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .cross-side {
+            font-family: 'UnifrakturMaguntia', serif;
+            font-size: 1.3rem;
+            color: var(--fang);
+            text-shadow: 0 0 12px rgba(255,255,255,0.8);
+            animation: crossSideGlow 2s ease-in-out infinite;
+        }
+        @keyframes crossSideGlow {
+            0%,100% { text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+            50% { text-shadow: 0 0 20px rgba(255,255,255,1), 0 0 30px rgba(255,0,0,0.7); }
+        }
+        .vallaris { display:block; font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing:0.15em; }
+
+        @keyframes titleFlicker { 0%,99.5%,100%{opacity:1;} 99.6%{opacity:0.3;} 99.7%{opacity:0.9;} 99.8%{opacity:0.1;} }
+        @keyframes titleGlitch { 0%,92%,100%{transform:translate(0,0) skew(0deg);text-shadow:0 0 20px rgba(255,255,255,0.5),0 0 60px rgba(200,200,200,0.3),2px 2px 0 #000,-2px -2px 0 rgba(255,255,255,0.15);} 93%{transform:translate(-8px,3px) skew(-3deg);text-shadow:-8px 3px 15px rgba(255,255,255,0.7),8px -3px 25px rgba(0,0,0,0.9),0 0 40px #fff,0 0 20px var(--blood);} 94%{transform:translate(6px,-2px) skew(2deg);text-shadow:6px -2px 20px rgba(255,255,255,0.6),-6px 2px 30px rgba(0,0,0,0.8),0 0 15px var(--blood);} 95%{transform:translate(0,0) skew(0deg);text-shadow:0 0 20px rgba(255,255,255,0.5),0 0 60px rgba(200,200,200,0.3);} }
+        @keyframes titleFloat { 0%,100%{transform:translateY(0);} 25%{transform:translateY(-6px);} 50%{transform:translateY(-2px);} 75%{transform:translateY(-8px);} }
+
+        /* === ПОДЗАГОЛОВОК === */
+        .subtitle {
+            font-family: 'Cormorant SC', 'Special Elite', serif; font-size:0.9rem; letter-spacing:0.3em;
+            color:var(--ash); text-align:center; opacity:0.7; text-transform:uppercase;
+            animation: subtitleWhisper 8s ease-in-out infinite, subtitleBleed 12s linear infinite;
+        }
+        @keyframes subtitleWhisper { 0%,100%{opacity:0.5;letter-spacing:0.3em;} 30%{opacity:0.9;letter-spacing:0.45em;} 60%{opacity:0.35;letter-spacing:0.25em;} 85%{opacity:0.75;letter-spacing:0.38em;} }
+        @keyframes subtitleBleed { 0%,88%,100%{color:var(--ash);text-shadow:none;} 90%{color:var(--blood);text-shadow:0 0 15px var(--blood);} 93%{color:var(--ash);text-shadow:none;} }
+
+        /* === ЗМЕИНЫЕ КОЛЬЦА === */
+        .serpent-coil {
+            position:absolute; pointer-events:none; z-index:9; border-radius:50%;
+            border:1.5px dashed rgba(180,180,180,0.25);
+            animation:coilRotate 20s linear infinite, coilBreathe 7s ease-in-out infinite;
+        }
+        .coil-1{width:320px;height:320px;top:-40px;left:-60px;}
+        .coil-2{width:380px;height:380px;top:-70px;left:-90px;animation-duration:27s,9s;animation-direction:reverse,normal;border-style:dotted;opacity:0.5;}
+        .coil-3{width:440px;height:440px;top:-100px;left:-120px;animation-duration:34s,11s;border-style:solid;border-width:0.8px;opacity:0.3;}
+        @keyframes coilRotate { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+        @keyframes coilBreathe { 0%,100%{border-color:rgba(180,180,180,0.25);} 50%{border-color:rgba(220,220,220,0.5);} }
+
+        /* === СОЦИАЛЬНЫЕ ССЫЛКИ (исправлено) === */
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            z-index: 12;
+            position: relative;
+        }
+        .social-link {
+            font-family: 'Cormorant SC', 'Special Elite', serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            color: var(--bone);
+            text-decoration: none;
+            padding: 12px 20px;
+            border: 1.5px solid var(--ash);
+            background: rgba(0,0,0,0.7);
+            text-transform: uppercase;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+            cursor: crosshair;
+            clip-path: polygon(8% 0%, 92% 0%, 100% 15%, 100% 85%, 92% 100%, 8% 100%, 0% 85%, 0% 15%);
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+            min-width: 130px;
+            text-align: center;
+            will-change: transform;
+            transform-origin: center;
+        }
+        .social-link:hover {
+            color: #000;
+            background: var(--fang);
+            border-color: var(--blood);
+            box-shadow: 0 0 35px rgba(168,0,0,0.8), 0 0 70px rgba(168,0,0,0.4), 0 0 120px rgba(168,0,0,0.2), 0 0 200px rgba(0,0,0,0.9);
+            transform: scale(1.05) translateY(-2px);
+            letter-spacing: 0.2em; /* не меняем */
+        }
+        .social-link:hover::after { height: 22px; opacity: 1; animation: dripDown 0.7s ease-in forwards; }
+        .social-link::after {
+            content: ''; position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%);
+            width: 3px; height: 0; background: var(--blood); border-radius: 0 0 50% 50%;
+            transition: height 0.5s ease; opacity: 0; box-shadow: 0 0 8px var(--blood);
+        }
+        @keyframes dripDown { 0%{height:0;opacity:0;} 60%{height:28px;opacity:1;} 80%{height:18px;opacity:0.8;} 100%{height:22px;opacity:1;} }
+        .social-link:hover::before { height: 16px; opacity: 0.7; }
+        .social-link::before {
+            content: ''; position: absolute; bottom: -18px; left: 35%; transform: translateX(-50%);
+            width: 2px; height: 0; background: var(--blood-glow); border-radius: 0 0 50% 50%;
+            transition: height 0.6s ease 0.1s; opacity: 0; box-shadow: 0 0 5px var(--blood);
+        }
+
+        /* === СЧЁТЧИК ПОСЕТИТЕЛЕЙ === */
+        .visitor-counter {
+            font-family: 'MedievalSharp', 'Special Elite', cursive;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            color: var(--ash);
+            text-shadow: 0 0 10px rgba(168,0,0,0.4);
+            background: rgba(0,0,0,0.6);
+            padding: 8px 20px;
+            border: 1px solid rgba(168,0,0,0.4);
+            clip-path: polygon(5% 0%, 95% 0%, 100% 30%, 100% 70%, 95% 100%, 5% 100%, 0% 70%, 0% 30%);
+            animation: counterPulse 5s ease-in-out infinite;
+            margin-bottom: 5px;
+        }
+        @keyframes counterPulse {
+            0%,100% { border-color: rgba(168,0,0,0.4); text-shadow: 0 0 10px rgba(168,0,0,0.4); }
+            50% { border-color: rgba(168,0,0,0.8); text-shadow: 0 0 20px rgba(168,0,0,0.8); }
+        }
+
+        /* === ПЛАВАЮЩИЕ РУНЫ === */
+        .floating-rune { position:fixed; pointer-events:none; z-index:4; font-family:'UnifrakturMaguntia',serif; font-size:2rem; color:rgba(180,180,180,0.12); animation:runeFloat 18s ease-in-out infinite; user-select:none; }
+        .rune-1{top:10%;left:8%;font-size:2.5rem;} .rune-2{top:75%;left:12%;animation-delay:4s;font-size:1.8rem;color:rgba(168,0,0,0.2);} .rune-3{top:20%;right:10%;animation-delay:8s;font-size:3rem;} .rune-4{top:70%;right:14%;animation-delay:2s;font-size:2.2rem;color:rgba(168,0,0,0.25);} .rune-5{top:45%;left:5%;animation-delay:6s;font-size:1.5rem;} .rune-6{top:55%;right:6%;animation-delay:10s;font-size:2.8rem;color:rgba(168,0,0,0.3);}
+        @keyframes runeFloat { 0%,100%{transform:translateY(0) rotate(0deg) scale(1);opacity:0.08;} 15%{transform:translateY(-40px) rotate(8deg) scale(1.3);opacity:0.2;} 30%{transform:translateY(-15px) rotate(-5deg) scale(0.9);opacity:0.05;} 45%{transform:translateY(-55px) rotate(12deg) scale(1.4);opacity:0.22;} 60%{transform:translateY(-25px) rotate(-8deg) scale(1.1);opacity:0.1;} 75%{transform:translateY(-50px) rotate(3deg) scale(1.25);opacity:0.18;} 90%{transform:translateY(-10px) rotate(-3deg) scale(0.85);opacity:0.04;} }
+
+        /* === ПОЛЗУЩИЕ ТЕНИ === */
+        .crawling-shadow { position:fixed; pointer-events:none; z-index:3; width:120px; height:4px; background:linear-gradient(90deg, transparent, rgba(150,150,150,0.3), transparent); border-radius:50%; animation:crawlHorizontal 14s linear infinite; filter:blur(2px); }
+        .crawl-top{top:3%;left:-120px;} .crawl-bottom{bottom:3%;right:-120px;animation-duration:17s;animation-direction:reverse;}
+        @keyframes crawlHorizontal { 0%{left:-120px;opacity:0;} 10%{opacity:0.5;} 90%{opacity:0.5;} 100%{left:105%;opacity:0;} }
+
+        /* === СВЕЧНЫЕ ПРИЗРАКИ === */
+        .candle-ghost { position:fixed; pointer-events:none; z-index:5; width:60px; height:60px; border-radius:50%; background:transparent; box-shadow:0 0 30px 8px rgba(180,180,180,0.06); animation:candleFlickerGhost 2.5s ease-in-out infinite; }
+        .candle-ghost:nth-child(1){top:15%;left:20%;} .candle-ghost:nth-child(2){top:70%;right:18%;animation-delay:1.2s;animation-duration:3s;box-shadow:0 0 30px 8px rgba(168,0,0,0.2);} .candle-ghost:nth-child(3){top:40%;left:75%;width:40px;height:40px;box-shadow:0 0 25px 6px rgba(168,0,0,0.15);animation-delay:0.8s;}
+        @keyframes candleFlickerGhost { 0%,100%{box-shadow:0 0 30px 8px rgba(180,180,180,0.06);transform:scale(1);} 30%{box-shadow:0 0 55px 15px rgba(200,200,200,0.12);transform:scale(1.3);} 45%{box-shadow:0 0 20px 4px rgba(150,150,150,0.03);transform:scale(0.7);} 60%{box-shadow:0 0 45px 12px rgba(190,190,190,0.1);transform:scale(1.2);} 80%{box-shadow:0 0 25px 5px rgba(160,160,160,0.04);transform:scale(0.8);} }
+
+        /* === ЧЕРЕП === */
+        .skull-ornament { position:relative; width:40px; height:45px; opacity:0.5; animation:skullBreathe 4s ease-in-out infinite; z-index:11; }
+        @keyframes skullBreathe { 0%,100%{opacity:0.4;transform:scale(1);} 50%{opacity:0.7;transform:scale(1.1);} }
+        .skull-top{width:30px;height:22px;background:var(--ash);border-radius:55% 55% 0 0;margin:0 auto;position:relative;box-shadow:inset 0 5px 8px rgba(0,0,0,0.5);}
+        .skull-jaw{width:22px;height:16px;background:var(--ash);border-radius:0 0 30% 30%;margin:2px auto 0;position:relative;box-shadow:inset 0 -3px 5px rgba(0,0,0,0.5);}
+        .skull-eye-socket{position:absolute;width:8px;height:9px;background:#000;border-radius:50%;top:5px;animation:socketGaze 3s ease-in-out infinite;}
+        .skull-eye-socket.left{left:5px;} .skull-eye-socket.right{right:5px;}
+        @keyframes socketGaze { 0%,100%{background:#000;} 40%{background:#111;box-shadow:0 0 4px rgba(200,200,200,0.3);} }
+        .skull-nose{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:5px;height:6px;background:#000;border-radius:40%;}
+
+        /* === СИГИЛ КОЛЬЦО === */
+        .sigil-ring { position:absolute; pointer-events:none; z-index:4; width:500px; height:500px; border:0.5px solid rgba(180,180,180,0.08); border-radius:50%; top:50%;left:50%; transform:translate(-50%,-50%); animation:sigilSpin 60s linear infinite; }
+        .sigil-ring::before,.sigil-ring::after{ content:'⬟'; position:absolute; font-size:2rem; color:rgba(200,200,200,0.15); animation:sigilSymbolPulse 5s ease-in-out infinite; }
+        .sigil-ring::before{top:-15px;left:50%;transform:translateX(-50%);} .sigil-ring::after{bottom:-15px;left:50%;transform:translateX(-50%) rotate(180deg);animation-delay:2.5s;}
+        @keyframes sigilSpin { 0%{transform:translate(-50%,-50%) rotate(0deg);} 100%{transform:translate(-50%,-50%) rotate(360deg);} }
+        @keyframes sigilSymbolPulse { 0%,100%{opacity:0.1;} 50%{opacity:0.35;} }
+
+        /* === ШЁПОТ ТЕКСТЫ === */
+        .whisper-text { position:fixed; pointer-events:none; z-index:6; font-family:'Special Elite',monospace; font-size:0.6rem; color:rgba(180,180,180,0.2); letter-spacing:0.4em; animation:whisperFade 12s ease-in-out infinite; user-select:none; white-space:nowrap; }
+        .whisper-1{top:8%;left:30%;} .whisper-2{top:85%;left:40%;animation-delay:4s;color:rgba(168,0,0,0.25);} .whisper-3{top:50%;left:3%;writing-mode:vertical-rl;animation-delay:8s;letter-spacing:0.6em;} .whisper-4{top:35%;right:4%;writing-mode:vertical-rl;animation-delay:2s;letter-spacing:0.5em;color:rgba(168,0,0,0.2);}
+        @keyframes whisperFade { 0%,100%{opacity:0.04;transform:translateY(0);} 20%{opacity:0.25;transform:translateY(-8px);} 40%{opacity:0.05;transform:translateY(3px);} 60%{opacity:0.3;transform:translateY(-12px);} 80%{opacity:0.02;transform:translateY(5px);} }
+
+        /* === АЗБУКА МОРЗЕ === */
+        .morse-dot { position:fixed; pointer-events:none; z-index:7; width:4px; height:4px; background:rgba(200,200,200,0.5); border-radius:50%; animation:morseBlink 3s steps(1) infinite; box-shadow:0 0 10px rgba(255,255,255,0.4); }
+        .morse-dot:nth-child(1){top:6%;right:15%;} .morse-dot:nth-child(2){top:6%;right:13%;animation-delay:0.3s;background:rgba(168,0,0,0.7);} .morse-dot:nth-child(3){top:6%;right:11%;animation-delay:0.9s;} .morse-dot:nth-child(4){bottom:6%;left:15%;animation-delay:0.5s;background:rgba(168,0,0,0.7);} .morse-dot:nth-child(5){bottom:6%;left:13%;animation-delay:1.1s;} .morse-dot:nth-child(6){bottom:6%;left:11%;animation-delay:1.7s;}
+        @keyframes morseBlink { 0%,40%,100%{opacity:0.1;box-shadow:0 0 2px rgba(255,255,255,0.2);} 41%,55%{opacity:1;box-shadow:0 0 18px rgba(255,255,255,0.8);} 56%,65%{opacity:0.1;} 66%,72%{opacity:1;box-shadow:0 0 18px rgba(255,255,255,0.8);} 73%,85%{opacity:0.1;} 86%,92%{opacity:1;box-shadow:0 0 18px rgba(255,255,255,0.8);} }
+
+        /* === ЦИТАТА ВНИЗУ === */
+        .bottom-quote { font-family:'Cormorant SC',serif; font-size:0.7rem; letter-spacing:0.25em; color:rgba(150,150,150,0.5); text-align:center; font-style:italic; animation:quoteBreathe 10s ease-in-out infinite; margin-top:5px; }
+        @keyframes quoteBreathe { 0%,100%{opacity:0.35;} 30%{opacity:0.7;} 60%{opacity:0.25;} 85%{opacity:0.6;} }
+
+        /* === АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ === */
+        @media (max-width: 600px) {
+            .cross-corner { font-size: 2rem; }
+            .cross-top-left { top: 5px; left: 5px; }
+            .cross-top-right { top: 5px; right: 5px; }
+            .cross-bottom-left { bottom: 5px; left: 5px; }
+            .cross-bottom-right { bottom: 5px; right: 5px; }
+            .gothic-frame { padding: 30px 12px 20px; clip-path: polygon(0% 10%,8% 0%,92% 0%,100% 10%,100% 100%,0% 100%); }
+            .vallaris { font-size: 2rem; }
+            .god-bless { font-size: 0.9rem; gap: 4px; letter-spacing: 0.2em; }
+            .cross-side { font-size: 1rem; }
+            .social-links { gap: 10px; }
+            .social-link { min-width: 100px; padding: 10px 14px; font-size: 0.7rem; letter-spacing: 0.1em; }
+            .serpent-eye-container { width: 100px; height: 58px; }
+            .coil-1 { width: 180px; height: 180px; top: -20px; left: -30px; }
+            .coil-2 { width: 220px; height: 220px; top: -40px; left: -50px; }
+            .coil-3 { width: 260px; height: 260px; top: -60px; left: -70px; }
+            .sigil-ring { width: 260px; height: 260px; }
+            .floating-rune { font-size: 1.2rem; }
+            .biblical-text { font-size: 0.7rem !important; }
+            .visitor-counter { font-size: 0.7rem; padding: 6px 14px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ЭПИЛЕПТИЧЕСКИЕ СЛОИ -->
+    <div class="strobe-fast"></div>
+    <div class="strobe-red"></div>
+
+    <!-- ГОТИЧЕСКИЕ КРЕСТЫ ПО КРАЯМ -->
+    <div class="cross-corner cross-top-left">✞</div>
+    <div class="cross-corner cross-top-right">✞</div>
+    <div class="cross-corner cross-bottom-left">✞</div>
+    <div class="cross-corner cross-bottom-right">✞</div>
+
+    <!-- БИБЛЕЙСКИЕ НАДПИСИ НА ФОНЕ (усиленные) -->
+    <div class="biblical-text" style="top:12%; left:3%;">PSALM 23:4</div>
+    <div class="biblical-text" style="top:22%; right:5%;">REVELATION 6:8</div>
+    <div class="biblical-text" style="top:68%; left:7%;">MATTHEW 27:46</div>
+    <div class="biblical-text" style="top:78%; right:3%;">MORS VINCIT OMNIA</div>
+    <div class="biblical-text" style="top:45%; left:12%;">SANCTUS SANCTUS SANCTUS</div>
+    <div class="biblical-text" style="top:55%; right:8%;">IN PRINCIPIO ERAT VERBUM</div>
+
+    <!-- ЧАСТИЦЫ -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ШУМ -->
+    <div class="noise-overlay"></div>
+
+    <!-- КРОВАВЫЙ ПУЛЬС -->
+    <div class="blood-pulse"></div>
+
+    <!-- ТУМАН -->
+    <div class="fog-layer"></div>
+    <div class="fog-layer" style="animation-delay:-15s;"></div>
+
+    <!-- СКАН-ЛИНИЯ -->
+    <div class="scan-line"></div>
+    <div class="scan-line" style="animation-delay:-5.5s;opacity:0.35;"></div>
+
+    <!-- РУНЫ -->
+    <div class="floating-rune rune-1">𖤐</div>
+    <div class="floating-rune rune-2">☠</div>
+    <div class="floating-rune rune-3">⛧</div>
+    <div class="floating-rune rune-4">☿</div>
+    <div class="floating-rune rune-5">🜚</div>
+    <div class="floating-rune rune-6">⚕</div>
+
+    <!-- ПОЛЗУЩИЕ ТЕНИ -->
+    <div class="crawling-shadow crawl-top"></div>
+    <div class="crawling-shadow crawl-bottom"></div>
+
+    <!-- СВЕЧНЫЕ ПРИЗРАКИ -->
+    <div class="candle-ghost" style="top:12%;left:16%;"></div>
+    <div class="candle-ghost" style="top:72%;right:22%;"></div>
+    <div class="candle-ghost" style="top:40%;left:75%;width:40px;height:40px;"></div>
+
+    <!-- АЗБУКА МОРЗЕ -->
+    <span class="morse-dot"></span><span class="morse-dot"></span><span class="morse-dot"></span>
+    <span class="morse-dot"></span><span class="morse-dot"></span><span class="morse-dot"></span>
+
+    <!-- ШЁПОТ -->
+    <span class="whisper-text whisper-1">they are watching</span>
+    <span class="whisper-text whisper-2">the serpent coils</span>
+    <span class="whisper-text whisper-3">venom drips</span>
+    <span class="whisper-text whisper-4">into the abyss</span>
+    <span class="whisper-text whisper-2" style="top:30%;left:55%;animation-delay:6s;">silence screams</span>
+
+    <!-- СИГИЛ -->
+    <div class="sigil-ring"></div>
+
+    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
+    <div class="main-container">
+        <div class="serpent-coil coil-1"></div>
+        <div class="serpent-coil coil-2"></div>
+        <div class="serpent-coil coil-3"></div>
+
+        <div class="gothic-frame">
+            <div class="skull-ornament">
+                <div class="skull-top">
+                    <div class="skull-eye-socket left"></div>
+                    <div class="skull-eye-socket right"></div>
+                    <div class="skull-nose"></div>
+                </div>
+                <div class="skull-jaw"></div>
+            </div>
+
+            <div class="serpent-eye-container" id="serpentEyeContainer">
+                <div class="serpent-eye">
+                    <div class="serpent-iris"></div>
+                    <div class="pupil-slit-wrapper">
+                        <div class="serpent-pupil-tracker" id="pupilTracker"></div>
+                    </div>
+                    <div class="eye-vein"></div>
+                    <div class="eye-vein"></div>
+                    <div class="eye-vein"></div>
+                    <div class="eye-vein"></div>
+                </div>
+            </div>
+
+            <h1 class="gothic-title">
+                <div class="god-bless">
+                    <span class="cross-side">✞</span> god bless <span class="cross-side">✞</span>
+                </div>
+                <span class="vallaris">Vallaris</span>
+            </h1>
+
+            <p class="subtitle">Abyssal • Serpentine • Unholy</p>
+
+            <!-- ССЫЛКИ ТОЛЬКО ТВОИ -->
+            <div class="social-links" id="socialLinks">
+                <a href="https://t.me/fallenvesper" target="_blank" rel="noopener" class="social-link">Telegram</a>
+                <a href="https://www.instagram.com/vallar1ss/" target="_blank" rel="noopener" class="social-link">Instagram</a>
+                <a href="https://github.com/Vallar1s" target="_blank" rel="noopener" class="social-link">GitHub</a>
+                <a href="https://steamcommunity.com/profiles/76561199213961762/" target="_blank" rel="noopener" class="social-link">Steam</a>
+            </div>
+
+            <!-- СЧЁТЧИК ПОСЕТИТЕЛЕЙ -->
+            <div class="visitor-counter" id="visitorCounter">Visitors: <span id="visitorCount">0</span></div>
+
+            <p class="bottom-quote">«In the serpent's gaze, all truths are venom.»</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ЧАСТИЦЫ (оптимизированы для мобильных)
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+            const PARTICLE_COUNT = isMobile ? 80 : 160;
+            const particles = [];
+
+            function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+            resize();
+            window.addEventListener('resize', resize);
+
+            class Particle {
+                constructor() { this.reset(); this.y = Math.random()*height; this.x = Math.random()*width; this.isRed = Math.random()<0.15; }
+                reset() {
+                    this.x = Math.random()*width; this.y = height + Math.random()*200;
+                    this.size = Math.random()*2.2+0.4; this.speedY = -(Math.random()*0.6+0.2);
+                    this.speedX = (Math.random()-0.5)*0.8; this.opacity = Math.random()*0.5+0.1;
+                    this.wobble = Math.random()*Math.PI*2; this.wobbleSpeed = (Math.random()-0.5)*0.03;
+                    this.wobbleAmp = Math.random()*1.5; this.flickerRate = Math.random()*0.02+0.005;
+                    this.life = Math.random()*600+400; this.age = 0; this.isRed = Math.random()<0.15;
+                }
+                update() {
+                    this.age++;
+                    if(this.age>this.life||this.y<-50||this.x<-50||this.x>width+50) { this.reset(); this.age=0; this.y=height+Math.random()*100; }
+                    this.y += this.speedY; this.wobble += this.wobbleSpeed;
+                    this.x += this.speedX + Math.sin(this.wobble)*this.wobbleAmp*0.3;
+                    this.currentOpacity = this.opacity*(0.5+0.5*Math.sin(this.age*this.flickerRate));
+                }
+                draw(ctx) {
+                    ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+                    const alpha = Math.max(0,Math.min(1,this.currentOpacity));
+                    let r,g,b;
+                    if(this.isRed) { r=160+Math.floor(Math.random()*80); g=20+Math.floor(Math.random()*30); b=20+Math.floor(Math.random()*30); }
+                    else { const gray=140+Math.floor(Math.random()*115); r=g=b=gray; }
+                    ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`; ctx.fill();
+                    if(Math.random()<0.08) { ctx.beginPath(); ctx.arc(this.x,this.y,this.size*2.5,0,Math.PI*2); ctx.fillStyle=`rgba(${r},${g},${b},${alpha*0.2})`; ctx.fill(); }
+                }
+            }
+
+            for(let i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle());
+            function animateParticles() {
+                ctx.clearRect(0,0,width,height);
+                particles.forEach(p=>{p.update();p.draw(ctx);});
+                for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
+                    const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+                    if(dist<55&&dist>5) { ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.strokeStyle=`rgba(180,180,180,${(1-dist/55)*0.06})`; ctx.lineWidth=0.3; ctx.stroke(); }
+                }
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+
+            // ГЛАЗ СЛЕДИТ ЗА КУРСОРОМ И ПРИКОСНОВЕНИЯМИ
+            const eyeContainer = document.getElementById('serpentEyeContainer');
+            const pupilTracker = document.getElementById('pupilTracker');
+            let eyeRect = eyeContainer.getBoundingClientRect();
+            const updateEyeRect = ()=> { eyeRect = eyeContainer.getBoundingClientRect(); };
+            window.addEventListener('resize', updateEyeRect);
+            window.addEventListener('scroll', updateEyeRect);
+
+            function movePupil(clientX, clientY) {
+                updateEyeRect();
+                const eyeCX = eyeRect.left + eyeRect.width/2;
+                const eyeCY = eyeRect.top + eyeRect.height/2;
+                const dx = clientX - eyeCX;
+                const dy = clientY - eyeCY;
+                const maxTravelX = eyeRect.width * 0.13;
+                const maxTravelY = eyeRect.height * 0.18;
+                let offsetX = (dx / (eyeRect.width/2)) * maxTravelX;
+                let offsetY = (dy / (eyeRect.height/2)) * maxTravelY;
+                offsetX = Math.max(-maxTravelX, Math.min(maxTravelX, offsetX));
+                offsetY = Math.max(-maxTravelY, Math.min(maxTravelY, offsetY));
+                pupilTracker.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            }
+
+            document.addEventListener('mousemove', (e) => movePupil(e.clientX, e.clientY));
+            document.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    movePupil(e.touches[0].clientX, e.touches[0].clientY);
+                }
+            }, { passive: true });
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 0) {
+                    movePupil(e.touches[0].clientX, e.touches[0].clientY);
+                }
+            }, { passive: true });
+
+            // КРОВАВЫЙ ГЛАЗ ПРИ НАВЕДЕНИИ НА ССЫЛКИ
+            document.querySelectorAll('.social-link').forEach(link=>{
+                link.addEventListener('mouseenter', ()=> eyeContainer.classList.add('bloody-eye'));
+                link.addEventListener('mouseleave', ()=> eyeContainer.classList.remove('bloody-eye'));
+            });
+
+            // СЧЁТЧИК ПОСЕТИТЕЛЕЙ
+            function updateVisitorCounter() {
+                let count = localStorage.getItem('vallarisVisitorCount');
+                count = count ? parseInt(count) : 0;
+                count++;
+                localStorage.setItem('vallarisVisitorCount', count);
+                document.getElementById('visitorCount').textContent = count;
+            }
+            updateVisitorCounter();
+        })();
+    </script>
+</body>
+</html>
