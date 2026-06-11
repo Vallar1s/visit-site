@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>🜂 god bless Vallaris — Abyssal Sanctum</title>
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Nosifer&family=Special+Elite&family=Cormorant+SC:wght@300;400;600;700&family=Eater&family=Butcherman&family=Creepster&family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
@@ -25,13 +25,14 @@
             cursor: crosshair;
             position: relative;
             animation: breathBackground 8s ease-in-out infinite;
+            -webkit-tap-highlight-color: transparent;
         }
 
         @keyframes breathBackground {
             0%,100%{ background:#000; } 20%{ background:#020202; } 40%{ background:#010101; } 70%{ background:#030303; } 85%{ background:#010101; }
         }
 
-        /* === ЭПИЛЕПТИЧЕСКИЙ ФОН (ослаблен) === */
+        /* === ЭПИЛЕПТИЧЕСКИЙ ФОН (ослаблен на мобильных) === */
         .strobe-fast {
             position: fixed; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;
             background: #000;
@@ -100,7 +101,7 @@
             z-index: 20;
             pointer-events: none;
             font-size: 3rem;
-            color: rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.15);
             animation: crossPulse 4s ease-in-out infinite;
             font-family: 'UnifrakturMaguntia', serif;
             text-shadow: 0 0 15px rgba(168,0,0,0.5);
@@ -120,25 +121,25 @@
             z-index: 7;
             pointer-events: none;
             font-family: 'MedievalSharp', 'Special Elite', cursive;
-            color: rgba(240,240,240,0.35);
+            color: rgba(240,240,240,0.45);
             white-space: nowrap;
             animation: biblicalFloat 30s linear infinite;
             user-select: none;
-            text-shadow: 0 0 10px rgba(255,0,0,0.5);
-            font-size: 0.9rem;
+            text-shadow: 0 0 10px rgba(255,0,0,0.6);
+            font-size: 1rem;
         }
         .biblical-text:nth-child(1) { top: 12%; left: 3%; animation-delay: 0s; }
-        .biblical-text:nth-child(2) { top: 22%; right: 5%; animation-delay: 5s; font-size: 0.8rem; }
-        .biblical-text:nth-child(3) { top: 68%; left: 7%; animation-delay: 10s; font-size: 0.75rem; }
-        .biblical-text:nth-child(4) { top: 78%; right: 3%; animation-delay: 15s; font-size: 0.85rem; }
-        .biblical-text:nth-child(5) { top: 45%; left: 12%; animation-delay: 20s; font-size: 0.8rem; }
-        .biblical-text:nth-child(6) { top: 55%; right: 8%; animation-delay: 25s; font-size: 0.7rem; }
+        .biblical-text:nth-child(2) { top: 22%; right: 5%; animation-delay: 5s; font-size: 0.9rem; }
+        .biblical-text:nth-child(3) { top: 68%; left: 7%; animation-delay: 10s; font-size: 0.85rem; }
+        .biblical-text:nth-child(4) { top: 78%; right: 3%; animation-delay: 15s; font-size: 0.95rem; }
+        .biblical-text:nth-child(5) { top: 45%; left: 12%; animation-delay: 20s; font-size: 0.9rem; }
+        .biblical-text:nth-child(6) { top: 55%; right: 8%; animation-delay: 25s; font-size: 0.8rem; }
         @keyframes biblicalFloat {
-            0% { transform: translateY(0); opacity: 0.25; }
-            25% { transform: translateY(-30px); opacity: 0.5; }
-            50% { transform: translateY(0); opacity: 0.35; }
-            75% { transform: translateY(30px); opacity: 0.45; }
-            100% { transform: translateY(0); opacity: 0.25; }
+            0% { transform: translateY(0); opacity: 0.35; }
+            25% { transform: translateY(-35px); opacity: 0.6; }
+            50% { transform: translateY(0); opacity: 0.45; }
+            75% { transform: translateY(35px); opacity: 0.55; }
+            100% { transform: translateY(0); opacity: 0.35; }
         }
 
         /* === ОСНОВНОЙ КОНТЕЙНЕР === */
@@ -178,7 +179,7 @@
         @keyframes spireRodGlow { 0%,100%{box-shadow:0 0 20px rgba(255,255,255,0.5);} 40%{box-shadow:0 0 45px rgba(255,255,255,0.9),0 0 80px rgba(200,200,200,0.4);} }
         @keyframes spireRodBleed { 0%,80%,100%{background:var(--fang);} 85%{background:var(--blood);} 90%{background:var(--fang);} }
 
-        /* === ЗМЕИНЫЙ ГЛАЗ === */
+        /* === ЗМЕИНЫЙ ГЛАЗ (адаптивный) === */
         .serpent-eye-container {
             position:relative; width:120px; height:70px; margin:10px 0; z-index:11;
             animation:eyeFloat 5s ease-in-out infinite;
@@ -285,26 +286,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 1.1rem;
+            gap: 10px;
+            font-size: 1.2rem;
             letter-spacing: 0.3em;
             opacity: 0.9;
             font-family: 'Cormorant SC', serif;
             text-transform: uppercase;
             white-space: nowrap;
+            margin-bottom: 5px;
         }
         .cross-side {
             font-family: 'UnifrakturMaguntia', serif;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: var(--fang);
-            text-shadow: 0 0 12px rgba(255,255,255,0.8);
-            animation: crossSideGlow 2s ease-in-out infinite;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
+            animation: crossSideGlow 2.5s ease-in-out infinite;
         }
         @keyframes crossSideGlow {
             0%,100% { text-shadow: 0 0 8px rgba(255,255,255,0.6); }
-            50% { text-shadow: 0 0 20px rgba(255,255,255,1), 0 0 30px rgba(255,0,0,0.7); }
+            50% { text-shadow: 0 0 25px rgba(255,255,255,1), 0 0 35px rgba(255,0,0,0.8); }
         }
-        .vallaris { display:block; font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing:0.15em; }
+        .vallaris { display:block; font-size: clamp(2.8rem, 6vw, 5rem); letter-spacing:0.15em; }
 
         @keyframes titleFlicker { 0%,99.5%,100%{opacity:1;} 99.6%{opacity:0.3;} 99.7%{opacity:0.9;} 99.8%{opacity:0.1;} }
         @keyframes titleGlitch { 0%,92%,100%{transform:translate(0,0) skew(0deg);text-shadow:0 0 20px rgba(255,255,255,0.5),0 0 60px rgba(200,200,200,0.3),2px 2px 0 #000,-2px -2px 0 rgba(255,255,255,0.15);} 93%{transform:translate(-8px,3px) skew(-3deg);text-shadow:-8px 3px 15px rgba(255,255,255,0.7),8px -3px 25px rgba(0,0,0,0.9),0 0 40px #fff,0 0 20px var(--blood);} 94%{transform:translate(6px,-2px) skew(2deg);text-shadow:6px -2px 20px rgba(255,255,255,0.6),-6px 2px 30px rgba(0,0,0,0.8),0 0 15px var(--blood);} 95%{transform:translate(0,0) skew(0deg);text-shadow:0 0 20px rgba(255,255,255,0.5),0 0 60px rgba(200,200,200,0.3);} }
@@ -331,7 +333,7 @@
         @keyframes coilRotate { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
         @keyframes coilBreathe { 0%,100%{border-color:rgba(180,180,180,0.25);} 50%{border-color:rgba(220,220,220,0.5);} }
 
-        /* === СОЦИАЛЬНЫЕ ССЫЛКИ (исправлено) === */
+        /* === СОЦИАЛЬНЫЕ ССЫЛКИ (адаптивные) === */
         .social-links {
             display: flex;
             flex-wrap: wrap;
@@ -339,6 +341,7 @@
             justify-content: center;
             z-index: 12;
             position: relative;
+            width: 100%;
         }
         .social-link {
             font-family: 'Cormorant SC', 'Special Elite', serif;
@@ -365,7 +368,7 @@
             border-color: var(--blood);
             box-shadow: 0 0 35px rgba(168,0,0,0.8), 0 0 70px rgba(168,0,0,0.4), 0 0 120px rgba(168,0,0,0.2), 0 0 200px rgba(0,0,0,0.9);
             transform: scale(1.05) translateY(-2px);
-            letter-spacing: 0.2em; /* не меняем */
+            letter-spacing: 0.2em;
         }
         .social-link:hover::after { height: 22px; opacity: 1; animation: dripDown 0.7s ease-in forwards; }
         .social-link::after {
@@ -446,27 +449,105 @@
         .bottom-quote { font-family:'Cormorant SC',serif; font-size:0.7rem; letter-spacing:0.25em; color:rgba(150,150,150,0.5); text-align:center; font-style:italic; animation:quoteBreathe 10s ease-in-out infinite; margin-top:5px; }
         @keyframes quoteBreathe { 0%,100%{opacity:0.35;} 30%{opacity:0.7;} 60%{opacity:0.25;} 85%{opacity:0.6;} }
 
-        /* === АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ === */
+        /* ============================================
+           МОБИЛЬНАЯ АДАПТАЦИЯ (полная перестройка)
+           ============================================ */
         @media (max-width: 600px) {
-            .cross-corner { font-size: 2rem; }
+            /* Скрываем некоторые тяжелые анимации для производительности */
+            .strobe-fast, .strobe-red {
+                animation: none !important;
+                opacity: 0.05;
+            }
+            .noise-overlay { animation: none; }
+            .candle-ghost { opacity: 0.3; }
+
+            body {
+                animation: none;
+            }
+
+            .cross-corner {
+                font-size: 2rem;
+            }
             .cross-top-left { top: 5px; left: 5px; }
             .cross-top-right { top: 5px; right: 5px; }
             .cross-bottom-left { bottom: 5px; left: 5px; }
             .cross-bottom-right { bottom: 5px; right: 5px; }
-            .gothic-frame { padding: 30px 12px 20px; clip-path: polygon(0% 10%,8% 0%,92% 0%,100% 10%,100% 100%,0% 100%); }
-            .vallaris { font-size: 2rem; }
-            .god-bless { font-size: 0.9rem; gap: 4px; letter-spacing: 0.2em; }
-            .cross-side { font-size: 1rem; }
-            .social-links { gap: 10px; }
-            .social-link { min-width: 100px; padding: 10px 14px; font-size: 0.7rem; letter-spacing: 0.1em; }
-            .serpent-eye-container { width: 100px; height: 58px; }
+
+            .biblical-text {
+                font-size: 0.8rem !important;
+                text-shadow: 0 0 8px rgba(255,0,0,0.8);
+                animation-duration: 40s;
+            }
+
+            .main-container {
+                width: 95%;
+                padding: 20px 15px;
+            }
+
+            .gothic-frame {
+                padding: 30px 15px 25px;
+                clip-path: polygon(0% 10%, 8% 0%, 92% 0%, 100% 10%, 100% 100%, 0% 100%);
+            }
+
+            .serpent-eye-container {
+                width: 110px;
+                height: 65px;
+            }
+
+            .gothic-title {
+                /* уменьшаем глитч на мобильных */
+                animation: titleFloat 6s ease-in-out infinite;
+            }
+            .vallaris {
+                font-size: 2.4rem;
+                letter-spacing: 0.1em;
+            }
+            .god-bless {
+                font-size: 1rem;
+                gap: 6px;
+                letter-spacing: 0.2em;
+            }
+            .cross-side {
+                font-size: 1.3rem;
+            }
+
+            .social-links {
+                gap: 12px;
+            }
+            .social-link {
+                min-width: 120px;
+                padding: 14px 16px;
+                font-size: 0.75rem;
+                letter-spacing: 0.1em;
+            }
+
+            .visitor-counter {
+                font-size: 0.75rem;
+                padding: 6px 18px;
+            }
+
+            .subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 0.2em;
+            }
+
+            .bottom-quote {
+                font-size: 0.6rem;
+            }
+
             .coil-1 { width: 180px; height: 180px; top: -20px; left: -30px; }
             .coil-2 { width: 220px; height: 220px; top: -40px; left: -50px; }
             .coil-3 { width: 260px; height: 260px; top: -60px; left: -70px; }
             .sigil-ring { width: 260px; height: 260px; }
             .floating-rune { font-size: 1.2rem; }
-            .biblical-text { font-size: 0.7rem !important; }
-            .visitor-counter { font-size: 0.7rem; padding: 6px 14px; }
+        }
+
+        /* Дополнительная адаптация для очень маленьких экранов */
+        @media (max-width: 380px) {
+            .vallaris { font-size: 2rem; }
+            .god-bless { font-size: 0.9rem; }
+            .cross-side { font-size: 1.1rem; }
+            .social-link { min-width: 100px; padding: 12px 12px; font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -575,7 +656,6 @@
 
             <p class="subtitle">Abyssal • Serpentine • Unholy</p>
 
-            <!-- ССЫЛКИ ТОЛЬКО ТВОИ -->
             <div class="social-links" id="socialLinks">
                 <a href="https://t.me/fallenvesper" target="_blank" rel="noopener" class="social-link">Telegram</a>
                 <a href="https://www.instagram.com/vallar1ss/" target="_blank" rel="noopener" class="social-link">Instagram</a>
@@ -583,7 +663,6 @@
                 <a href="https://steamcommunity.com/profiles/76561199213961762/" target="_blank" rel="noopener" class="social-link">Steam</a>
             </div>
 
-            <!-- СЧЁТЧИК ПОСЕТИТЕЛЕЙ -->
             <div class="visitor-counter" id="visitorCounter">Visitors: <span id="visitorCount">0</span></div>
 
             <p class="bottom-quote">«In the serpent's gaze, all truths are venom.»</p>
@@ -592,12 +671,11 @@
 
     <script>
         (function() {
-            // ЧАСТИЦЫ (оптимизированы для мобильных)
             const canvas = document.getElementById('particleCanvas');
             const ctx = canvas.getContext('2d');
             let width, height;
             const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
-            const PARTICLE_COUNT = isMobile ? 80 : 160;
+            const PARTICLE_COUNT = isMobile ? 60 : 160;
             const particles = [];
 
             function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
@@ -644,7 +722,6 @@
             }
             animateParticles();
 
-            // ГЛАЗ СЛЕДИТ ЗА КУРСОРОМ И ПРИКОСНОВЕНИЯМИ
             const eyeContainer = document.getElementById('serpentEyeContainer');
             const pupilTracker = document.getElementById('pupilTracker');
             let eyeRect = eyeContainer.getBoundingClientRect();
@@ -658,8 +735,8 @@
                 const eyeCY = eyeRect.top + eyeRect.height/2;
                 const dx = clientX - eyeCX;
                 const dy = clientY - eyeCY;
-                const maxTravelX = eyeRect.width * 0.13;
-                const maxTravelY = eyeRect.height * 0.18;
+                const maxTravelX = eyeRect.width * 0.15;
+                const maxTravelY = eyeRect.height * 0.2;
                 let offsetX = (dx / (eyeRect.width/2)) * maxTravelX;
                 let offsetY = (dy / (eyeRect.height/2)) * maxTravelY;
                 offsetX = Math.max(-maxTravelX, Math.min(maxTravelX, offsetX));
@@ -669,23 +746,17 @@
 
             document.addEventListener('mousemove', (e) => movePupil(e.clientX, e.clientY));
             document.addEventListener('touchmove', (e) => {
-                if (e.touches.length > 0) {
-                    movePupil(e.touches[0].clientX, e.touches[0].clientY);
-                }
+                if (e.touches.length > 0) movePupil(e.touches[0].clientX, e.touches[0].clientY);
             }, { passive: true });
             document.addEventListener('touchstart', (e) => {
-                if (e.touches.length > 0) {
-                    movePupil(e.touches[0].clientX, e.touches[0].clientY);
-                }
+                if (e.touches.length > 0) movePupil(e.touches[0].clientX, e.touches[0].clientY);
             }, { passive: true });
 
-            // КРОВАВЫЙ ГЛАЗ ПРИ НАВЕДЕНИИ НА ССЫЛКИ
             document.querySelectorAll('.social-link').forEach(link=>{
                 link.addEventListener('mouseenter', ()=> eyeContainer.classList.add('bloody-eye'));
                 link.addEventListener('mouseleave', ()=> eyeContainer.classList.remove('bloody-eye'));
             });
 
-            // СЧЁТЧИК ПОСЕТИТЕЛЕЙ
             function updateVisitorCounter() {
                 let count = localStorage.getItem('vallarisVisitorCount');
                 count = count ? parseInt(count) : 0;
